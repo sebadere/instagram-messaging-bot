@@ -17,6 +17,7 @@ const config = require("./config"),
 
 module.exports = class GraphApi {
   static async callSendApi(requestBody) {
+    console.log(requestBody)
     let url = new URL(`${config.apiUrl}/me/messages`);
     url.search = new URLSearchParams({
       access_token: config.pageAccesToken

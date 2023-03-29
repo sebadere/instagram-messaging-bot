@@ -19,7 +19,8 @@ const ENV_VARS = [
   "APP_ID",
   "PAGE_ACCESS_TOKEN",
   "APP_SECRET",
-  "VERIFY_TOKEN"
+  "VERIFY_TOKEN",
+  "OPENAI_API_KEY"
 ];
 
 module.exports = {
@@ -34,6 +35,7 @@ module.exports = {
   appSecret: process.env.APP_SECRET,
   verifyToken: process.env.VERIFY_TOKEN,
   shopUrl: process.env.SHOP_URL || "https://www.originalcoastclothing.com",
+  openApiKey: process.env.OPEN_API_KEY,
 
   // URL of your app domain. Will be automatically updated.
   appUrl: process.env.APP_URL || "<App URL>",

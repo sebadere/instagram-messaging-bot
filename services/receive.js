@@ -26,10 +26,11 @@ module.exports = class Receive {
 
   // Check if the event is a message or postback and
   // call the appropriate handler function
-  handleMessage() {
+  async handleMessage() {
     let event = this.webhookEvent;
 
     let responses;
+    console.log(event.message)
 
     try {
       if (event.message) {
@@ -42,7 +43,7 @@ module.exports = class Receive {
         } else if (message.attachments) {
           responses = this.handleAttachmentMessage();
         } else if (message.text) {
-          responses = this.handleTextMessage();
+          responses = await this.handleTextMessage();
         }
       } else if (event.postback) {
         responses = this.handlePostback();
@@ -50,7 +51,7 @@ module.exports = class Receive {
         responses = this.handleReferral();
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       responses = {
         text: `An error has occured: '${error}'. We have been notified and \
         will fix the issue shortly!`
@@ -73,22 +74,25 @@ module.exports = class Receive {
   }
 
   // Handles messages events with text
-  handleTextMessage() {
-    console.log(
+  async handleTextMessage() {
+    /* console.log(
       `Received text from user '${this.user.name}' (${this.user.igsid}):\n`,
       this.webhookEvent.message.text
-    );
+    );*/
 
+    console.log('HANDLE TEXT MESSAGE')
     let message = this.webhookEvent.message.text.trim().toLowerCase();
 
     let response;
 
-    if (
+    response = await Response.getChatGPTResponse(message);
+
+/*     if (
       message.includes("start over") ||
       message.includes("get started") ||
-      message.includes("hi")
+      message.includes("hi") 
     ) {
-      response = Response.genNuxMessage(this.user);
+      response = await Response.getChatGPTResponse(message);
     } else if (Number(message)) {
       // Assume numeric input ("123") to be an order number
       response = Order.handlePayload("ORDER_NUMBER");
@@ -122,7 +126,7 @@ module.exports = class Receive {
         ])
       ];
     }
-
+ */
     return response;
   }
 
@@ -132,7 +136,7 @@ module.exports = class Receive {
 
     // Get the attachment
     let attachment = this.webhookEvent.message.attachments[0];
-    console.log("Received attachment:", `${attachment} for ${this.user.igsid}`);
+    //console.log("Received attachment:", `${attachment} for ${this.user.igsid}`);
 
     response = Response.genQuickReply(i18n.__("fallback.attachment"), [
       {
@@ -180,8 +184,8 @@ module.exports = class Receive {
   }
 
   handlePayload(payload) {
-    console.log(`Received Payload: ${payload} for user ${this.user.igsid}`);
-
+    //console.log(`Received Payload: ${payload} for user ${this.user.igsid}`);
+    console.log('toy aca')
     let response;
 
     // Set the response based on the payload
